@@ -1,0 +1,28 @@
+# RAW
+
+raw_test:
+  type: pandas.CSVDataSet
+  filepath: ${base_path}/01_raw/raw_test.csv
+  layer: raw
+  load_args:
+    dtype: str
+    sep: '|'
+
+# INTERMEDIATE
+
+intermediate_test:
+  type: pandas.ParquetDataSet
+  filepath: ${base_path}/02_intermediate/intermediate_test.parquet
+  layer: intermediate
+
+# PRIMARY
+
+# FEATURE
+
+# MODEL INPUT
+
+# MODEL
+
+# MODEL OUTPUT
+
+# REPORTING

@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+sleep 120  # wait for Azure container to hook up hellcat-managed-identity properly
+
+env PYTHONPATH=src kedro run --env=$1 --pipeline=$2
