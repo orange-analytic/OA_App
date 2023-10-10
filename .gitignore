@@ -1,0 +1,9 @@
+requirements_win.txt
+*.ipynb
+.ipynb_checkpoints
+__pycache__
+*.csv
+*.parquet
+*.pkl
+.idea/
+*.pyc

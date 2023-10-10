@@ -1,0 +1,14 @@
+pandas
+plotly
+jupytext
+notebook
+scipy
+kedro
+pytest
+numpy
+pyarrow
+kedro-viz
+pandas-profiling
+ipywidgets
+pandera
+scikit-learn

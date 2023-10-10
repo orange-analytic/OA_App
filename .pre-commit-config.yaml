@@ -1,0 +1,94 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: fix-byte-order-marker
+      - id: check-ast
+      - id: name-tests-test
+        exclude: (context.py|test_template.py|/test_utils.py$)
+      - id: check-yaml
+      - id: check-json
+      - id: trailing-whitespace
+        exclude: (^(.idea|.*/exploration/.*))
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args:
+          - –maxkb=500
+      - id: forbid-new-submodules
+      - id: no-commit-to-branch
+        args:
+          - --branch
+          - main
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort - import formatting
+        args:
+          - --profile
+          - black
+          - --src
+          - src
+        files: \.py$
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        args: [--quiet, --config=pyproject.toml]
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-noqa
+      - id: python-check-mock-methods
+      - id: python-no-eval
+      - id: python-use-type-annotations
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+        args: [--py3-plus, --py36-plus]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: [--config=setup.cfg]
+        exclude: notebooks/.*
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.4
+    hooks:
+      - id: bandit
+        args:
+          # Skipping
+          # B311 - Use of ``random`` lib, which isn't suitable for cryptography
+          # B404 - Use of ``subprocess`` lib
+          # B506 - Unsafe loading of YAML files (could inject code in YAML file)
+          # B701 - Jinja2 configured to disable automatic escaping of HTML submissions
+          - --skip
+          - B311,B404,B506,B701
+        exclude: (.*/(test_[^/]*|[^/]*_test)\.py$|notebooks/.*)
+  - repo: local
+    hooks:
+      - id: post-checkout-local
+        name: Post checkout
+        always_run: true
+        stages: [post-checkout]
+        entry: git status
+        language: system
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.77.1
+    hooks:
+      - id: terraform_fmt
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.0.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [pytest, sqlalchemy, sqlalchemy2-stubs, types-python-dateutil]
+        args:
+          - --namespace-package
+          - --config-file=setup.cfg
+          - --strict
+          - --no-warn-unused-ignores
+        exclude: (notebooks/.*|.ipython/.*)
